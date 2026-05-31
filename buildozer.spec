@@ -34,11 +34,14 @@ android.permissions = INTERNET
 # (int) Android API to use
 android.api = 34
 
+# (str) Android build tools version
+android.build_tools = 34.0.0
+
+# (bool) Automatically accept SDK licenses
+android.accept_sdk_license = True
+
 # (int) Minimum API required
 android.minapi = 21
-
-# (int) Android SDK version to use
-android.sdk = 34
 
 # (str) Android NDK version to use
 android.ndk = 25b
