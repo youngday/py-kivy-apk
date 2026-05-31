@@ -43,11 +43,14 @@ android.accept_sdk_license = True
 # (int) Minimum API required
 android.minapi = 21
 
-# (str) Android NDK version to use
-android.ndk = 25b
+# (str) Android NDK version to use (use system pre-installed NDK)
+android.ndk = 27.3.13750724
 
-# (bool) Use Android's default Java 8?
-android.use_default_java8 = True
+# (str) Path to Android SDK (use system pre-installed)
+android.sdk_path = /usr/local/lib/android/sdk
+
+# (str) Path to Android NDK
+android.ndk_path = /usr/local/lib/android/sdk/ndk/27.3.13750724
 
 # (str) Python-for-android (p4a) branch to use
 p4a.branch = develop
