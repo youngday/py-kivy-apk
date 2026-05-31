@@ -1,0 +1,49 @@
+name: Build Android APK
+
+on:
+  push:
+    tags:
+      - 'v*'  # 推送形如 v1.0, v2.0.1 的 tag 时触发
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            git zip unzip openjdk-17-jdk \
+            python3-pip autoconf libtool pkg-config \
+            libc6-dev libncurses5-dev libncursesw5-dev \
+            libtinfo5 cmake libffi-dev libssl-dev \
+            libsqlite3-dev
+
+      - name: Install Buildozer
+        run: |
+          pip install buildozer
+
+      - name: Build APK with Buildozer
+        run: |
+          buildozer android debug
+
+      - name: Upload APK to Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            bin/*.apk
+          tag_name: ${{ github.ref_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
