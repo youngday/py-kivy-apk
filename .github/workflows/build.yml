@@ -54,6 +54,16 @@ jobs:
       - name: Build APK with Buildozer
         run: |
           buildozer android debug
+          # 查找构建产物中的 APK 文件，复制到固定路径
+          APK_FILE=$(find . -name '*.apk' -type f 2>/dev/null | head -1)
+          if [ -z "$APK_FILE" ]; then
+            echo "::error::No APK file found after build!"
+            find . -name '*.apk' -type f 2>/dev/null || true
+            ls -la bin/ 2>/dev/null || echo "bin/ directory empty"
+            exit 1
+          fi
+          echo "Found APK: $APK_FILE"
+          cp "$APK_FILE" ./calculator.apk
         env:
           ANDROID_HOME: /usr/local/lib/android/sdk
           ANDROID_SDK_ROOT: /usr/local/lib/android/sdk
@@ -64,8 +74,7 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
-          files: |
-            bin/*.apk
+          files: ./calculator.apk
           tag_name: ${{ github.ref_name }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -75,4 +84,4 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: calculator-apk
-          path: bin/*.apk
+          path: ./calculator.apk
