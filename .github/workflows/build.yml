@@ -40,13 +40,16 @@ jobs:
 
       - name: Set up Android SDK and accept licenses
         run: |
-          # Use system pre-installed SDK
           export ANDROID_HOME=/usr/local/lib/android/sdk
           export ANDROID_SDK_ROOT=$ANDROID_HOME
+          CMDLINE_TOOLS=$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager
+          # Create symlink for buildozer compatibility (looks for tools/bin/sdkmanager)
+          mkdir -p $ANDROID_HOME/tools/bin
+          ln -sf $CMDLINE_TOOLS $ANDROID_HOME/tools/bin/sdkmanager
           # Accept all licenses
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses > /dev/null 2>&1 || true
-          # Install build-tools 34.0.0 (if not already installed)
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager "build-tools;34.0.0" "platforms;android-34" > /dev/null 2>&1 || true
+          yes | $CMDLINE_TOOLS --licenses || true
+          # Install required SDK components
+          yes | $CMDLINE_TOOLS "build-tools;34.0.0" "platforms;android-34" "platform-tools" || true
 
       - name: Build APK with Buildozer
         run: |
