@@ -21,10 +21,7 @@ source.include_globs = *.py
 # (list) List of exclusions using glob patterns
 source.exclude_globs = *.pyc
 
-# (str) Application version
-version = 0.1.0
-
-# (str) Application versioning method
+# (str) Application version (from main.py __version__)
 version.regex = __version__ = ['"](.*)['"]
 version.filename = %(source.dir)s/main.py
 
