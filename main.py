@@ -3,7 +3,7 @@
 可以在此环境直接预览（桌面窗口），也可用 buildozer 打包为 APK
 """
 
-__version__ = '0.1.0'
+__version__ = '0.3.0'
 
 from kivy.app import App
 from kivy.uix.gridlayout import GridLayout
